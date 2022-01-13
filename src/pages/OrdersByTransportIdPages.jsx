@@ -16,9 +16,12 @@ const OrdersByTransportIdPages = () => {
     const params = useParams()
     const { id_transport } = useParams()
     const [transport, setTransport] = useState({})
-    const [orders, setOrders] = useState([0])
+    const [orders, setOrders] = useState([])
     const [fetchOrdersByTransportId, isLoading, loadError] = useFetching(async () => {
         const response = await getOrdersByTransportId(id_transport)
+        
+        console.log(response)
+        
         setTransport(response.data.transport)
         setOrders(response.data.orders)
     }) 
@@ -49,7 +52,7 @@ const OrdersByTransportIdPages = () => {
 
     return (
         <div className='App'>
-            <h1>Транспорт: {transport.id} {transport.vehicle_mark} {transport.vehicle_model} Гос. номер: {transport.registration_mark}</h1>
+            <h1>Транспорт: {transport.vehicle_mark} {transport.vehicle_model} Гос. номер: {transport.registration_plates}</h1>
             {isLoading
                 ? <Spin size="large" />
                 :

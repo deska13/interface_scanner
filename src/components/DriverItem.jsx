@@ -6,20 +6,23 @@ import { useFetching } from '../hooks/useFetching'
 import { setDriverById } from '../API/ClientBaseService'
 
 const DriverItem = (props) => {
+    const [client, setClient] = useState({})
     const [driver, setDriver] = useState({})
 
     const [setUserInfo, isLoad] = useFetching(async () => {
-        console.log('const response = await setDriverData(props.driver)')
+        await setClient(props.client)
+        await setDriver(props.driver)
     })
 
     useEffect(() => {
+        console.log(driver)
         setUserInfo()
     }, [])
 
     const dateFormat = 'DD.MM.YYYY'
 
     const [setDriverInfo, isSet, setError] = useFetching(async () => {
-        const response = await setDriverById(driver)
+        const response = await setDriverById(client, driver)
     }) 
 
     return (
@@ -35,22 +38,22 @@ const DriverItem = (props) => {
                     <Col span={6}>
                         <Input
                             addonBefore="Фамилия"
-                            onChange={e => setDriver({...driver, surname: e.target.value})}
-                            defaultValue={driver.surname}
+                            onChange={e => setClient({...client, surname: e.target.value})}
+                            defaultValue={client.surname}
                         />
                     </Col>
                     <Col span={6}>
                         <Input
                             addonBefore="Имя"
-                            onChange={e => setDriver({...driver, name: e.target.value})}
-                            defaultValue={driver.name}
+                            onChange={e => setClient({...client, name: e.target.value})}
+                            defaultValue={client.name}
                         />
                     </Col>
                     <Col span={6} offset={5} pull={5}>
                         <Input
                             addonBefore="Отчество"
-                            onChange={e => setDriver({...driver, patronymic: e.target.value})}
-                            defaultValue={driver.patronymic}
+                            onChange={e => setClient({...client, patronymic: e.target.value})}
+                            defaultValue={client.patronymic}
                         />
                     </Col>
                     <Col span={4}>

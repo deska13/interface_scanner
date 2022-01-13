@@ -18,6 +18,7 @@ const TransportIdPages = () => {
     const [transport, setTransport] = useState({})
     const [transport_passport, setTransportPassport] = useState({})
     const [transport_registration, setTransportRegistration] = useState({})
+    const [clients, setClients] = useState([])
     const [drivers, setDrivers] = useState([])
     const [modal, setModal] = useState(false)
     const [fetchTransportById, isLoading, loadError] = useFetching(async () => {
@@ -25,6 +26,7 @@ const TransportIdPages = () => {
         setTransport(response.data.transport)
         setTransportPassport(response.data.transport_passport)
         setTransportRegistration(response.data.transport_registration)
+        setClients(response.data.clients)
         setDrivers(response.data.drivers)
     }) 
 
@@ -50,7 +52,7 @@ const TransportIdPages = () => {
                         timeout={200}
                         classNames="client"
                     >
-                        <DriverItem number={index + 1} driver={driver} />
+                        <DriverItem number={index + 1} driver={driver} client={clients[index]}/>
                     </CSSTransition>
                 </TransitionGroup>
             </Card>

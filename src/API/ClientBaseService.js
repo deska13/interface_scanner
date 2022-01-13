@@ -105,8 +105,9 @@ export const getOrdersByTransportId = async (id_transport) => {
 }
 
 
-export const setDriverById = async (driver) => {
+export const setDriverById = async (client, driver) => {
     const data = JSON.stringify({
+        client: client,
         driver: driver
     })
     const options = {

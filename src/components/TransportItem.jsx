@@ -8,7 +8,7 @@ const TransportItem = (props) => {
     return (
         <div className="transport">
             <div className="transport__content">
-                <strong>{props.transport.id}. {props.transport.transport_passport.vehicle_model} {props.transport.transport_passport.registration_mark}</strong>
+                <strong>{props.transport.id}. {props.transport.vehicle_mark} {props.transport.vehicle_model} {props.transport.registration_plates}</strong>
             </div>
             <div className="transport__button">
                 <Button  onClick={()=> navigate(`/transports/${props.transport.id}`)}>Открыть</Button>

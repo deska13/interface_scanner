@@ -9,7 +9,7 @@ const OrderItem = (props) => {
     const [order, setOrder] = useState({})
 
     const [setOrderInfo, isLoad] = useFetching(async () => {
-        console.log('const response = await setOrderInfo(props.order)')
+        await setOrder(props.order)
     })
 
     useEffect(() => {
@@ -42,46 +42,48 @@ const OrderItem = (props) => {
                 ? <Spin />
                 :<Row>
                     <Col span={24}>
-                        <h1>{props.number} предложение от {order.bank}</h1>
+                        <h1>Предложение от {order.insurance_company}</h1>
                     </Col>
                     <Col span={12}>
                         <Row>
                             <Col span={24}>
-                                <p>Программа страхования { order.insurance_program }</p>
+                                <p>Программа страхования: { order.insurance_program }</p>
                             </Col>
-                            <Col span={24}>
-                                <p>Федеральная спец.программа {order.federal_special_program}</p>
-                            </Col>
+                            {/* <Col span={24}>
+                                <p>Федеральная спец.программа: {order.federal_special_program}</p>
+                            </Col> */}
                         </Row>
                     </Col>
                     
-                    <Col span={12}>
+                    {/* <Col span={12}>
                         <Row>
                             <Col span={24}>
-                                <p>Дисконтая программа {order.discount_program}</p>
+                                <p>Дисконтная программа: {order.discount_program}</p>
                             </Col>
                             <Col span={24}>
-                                <p>Дополнительная программа {order.additional_program}</p>
+                                <p>Дополнительная программа: {order.additional_program}</p>
                             </Col>
                             <Col span={24}>
-                                <p>Ограничения пробега {order.mileage_limits}</p>
+                                <p>Ограничения пробега: {order.mileage_limits}</p>
                             </Col>
                             <Col span={24}>
-                                <p>СТОА по выбору страхователя {order.STOA_at_the_policyholder_choice}</p>
+                                <p>СТОА по выбору страхователя: {order.STOA_at_the_policyholder_choice}</p>
                             </Col>
                             <Col span={24}>
-                                <p>Скидки за счёт КВ {order.discounts_due_to_KV}</p>
+                                <p>Скидки за счёт КВ: {order.discounts_due_to_KV}</p>
                             </Col>
                         </Row>
-                    </Col>
+                    </Col> */}
                     <Col span={24}>
                         <Card style={{width: "100%"}}>
-                            <p>Стоимость {order.price}</p>
+                            <p>{order.number_calc}</p>
+                            <p>Франшиза: {order.franchise}</p>
+                            <p>Стоимость: {order.price}</p>
                         </Card>
                     </Col>
-                    <Col style={{marginTop: "10px"}} span={8} offset={16}>
+                    {/* <Col style={{marginTop: "10px"}} span={8} offset={16}>
                         <a href={order.url}><Button onClick={() => false}>Переход на сайт</Button></a>
-                    </Col>
+                    </Col> */}
                 </Row>
             }
         </div>
