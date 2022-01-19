@@ -1,6 +1,6 @@
 import React, { useState, useEffect} from 'react'
 import { useParams } from 'react-router'
-import { getTransportById, setTransportById } from '../API/ClientBaseService'
+import { getTransportById, setTransportById, getCarMarks, getCarModels, getCarTechList, getCarConfigurationsByModel } from '../API/ClientBaseService'
 import { useFetching } from '../hooks/useFetching'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import DriverItem from '../components/DriverItem'
@@ -20,7 +20,15 @@ const TransportIdPages = () => {
     const [transport_registration, setTransportRegistration] = useState({})
     const [clients, setClients] = useState([])
     const [drivers, setDrivers] = useState([])
+
+    const [carMarks, setCarMarks] = useState([])
+    const [carModels, setCarModels] = useState([])
+    const [carConfigurations, setCarConfigurations] = useState([])
+    const [carTransmissions, setCarTransmission] = useState([])
+    const [carDrives, setCarDrive] = useState([])
+    const [carEngineTypes, setCarEngineType] = useState([])
     const [modal, setModal] = useState(false)
+
     const [fetchTransportById, isLoading, loadError] = useFetching(async () => {
         const response = await getTransportById(id_transport)
         setTransport(response.data.transport)
@@ -28,7 +36,31 @@ const TransportIdPages = () => {
         setTransportRegistration(response.data.transport_registration)
         setClients(response.data.clients)
         setDrivers(response.data.drivers)
+        
     }) 
+
+    const [fetchCarMark, isLoadingCarMark, loadErrorCarMark] = useFetching(async () => {
+        const response = await getCarMarks()
+        setCarMarks(response.data)
+    })
+
+    const [fetchCarModel, isLoadingCarModel, loadErrorCarModel] = useFetching(async (val) => {
+        const response = await getCarModels(val)
+        setCarModels(response.data)
+    })
+
+    const [fetchCarConfigurationByModel, isLoadingCarConfigurationByModel, loadErrorCarConfigurationByModel] = useFetching(async (val) => {
+        const response = await getCarConfigurationsByModel(transport.vehicle_mark, val)
+        setCarConfigurations(response.data)
+        console.log(response)
+    })
+
+    const [fetchCarTech, isLoadingCarTech, loadErrorCarTech] = useFetching(async (val) => {
+        const response = await getCarTechList(transport.vehicle_mark, transport.vehicle_model, val)
+        setCarTransmission(response.data.transmission)
+        setCarDrive(response.data.drive)
+        setCarEngineType(response.data.engine_type)
+    })
 
     const [setTrasnportInfo, isSet, setError] = useFetching(async () => {
         console.log(transport_passport)
@@ -59,8 +91,36 @@ const TransportIdPages = () => {
         </Col> 
     })
 
+    const carMarkSelectOptions = carMarks.map((carMark) =>{
+        return <Option value={carMark.name}>{carMark.name}</Option>
+    })
+
+    const carModelSelectOptions = carModels.map((carModel) =>{
+        return <Option value={carModel.name}>{carModel.name}</Option>
+    })
+
+
+    const carConfigurationSelectOptions = carConfigurations.map((carConfiguration) =>{
+        return <Option value={carConfiguration}>{carConfiguration}</Option>
+    })
+
+    const carTransmissionSelectOption = carTransmissions.map((transmission) => {
+        return <Option value={transmission}>{transmission}</Option>
+    })
+
+    const carDriveSelectOption = carDrives.map((drive) => {
+        return <Option value={drive}>{drive}</Option>
+    })
+
+    const carEngineTypeSelectOption = carEngineTypes.map((engineType) => {
+        return <Option value={engineType}>{engineType}</Option>
+    })
+
     useEffect(() => {
         fetchTransportById(params.id_transport)
+        fetchCarMark()
+        fetchCarModel(transport.vehicle_mark)
+        fetchCarTech(transport.type_body)
     }, [])
 
     return (
@@ -79,26 +139,56 @@ const TransportIdPages = () => {
                                         Транспорт: {transport.id}
                                     </h3>
                                 </Col>
-                                <Col span={6}>
-                                    <Input 
-                                        addonBefore="Марка"
-                                        onChange={e => setTransport({...transport, vehicle_mark: e.target.value})}
+                                <Col span={2}>
+                                    <p>Марка:</p>
+                                </Col>
+                                <Col span={4}>
+                                    <Select
+                                        showSearch
+                                        placeholder="Выберите марку авто"
+                                        style={{ width: '100%' }}
                                         defaultValue={transport.vehicle_mark}
-                                    />
+                                        onChange={(val) => {
+                                            setTransport({...transport, vehicle_mark: val})
+                                            fetchCarModel(val)
+                                        }}
+                                        >
+                                        {carMarkSelectOptions}
+                                    </Select>
                                 </Col>
-                                <Col span={6}>
-                                    <Input 
-                                        addonBefore="Модель"
-                                        onChange={e => setTransport({...transport, vehicle_model: e.target.value})}
+                                <Col span={2}>
+                                    <p>Модель:</p>
+                                </Col>
+                                <Col span={4}>
+                                    <Select
+                                        showSearch
+                                        placeholder="Выберите модель авто"
+                                        style={{ width: '100%' }}
                                         defaultValue={transport.vehicle_model}
-                                    />
+                                        onChange={(val) => {
+                                            setTransport({...transport, vehicle_model: val})
+                                            fetchCarConfigurationByModel(val)
+                                        }}
+                                        >
+                                        {carModelSelectOptions}
+                                    </Select>
                                 </Col>
-                                <Col span={6} offset={6} pull={6}>
-                                    <Input 
-                                        addonBefore="Мощность двигателя"
-                                        onChange={e => setTransport({...transport, engine_power: e.target.value})}
-                                        defaultValue={transport.engine_power}
-                                    />
+                                <Col span={2}>
+                                    <p>Конфигурация</p>
+                                </Col>
+                                <Col span={4} offset={6} pull={6}>
+                                    <Select
+                                        showSearch
+                                        placeholder="Тип кузова"
+                                        style={{ width: '100%' }}
+                                        defaultValue={transport.type_body}
+                                        onChange={(val) => {
+                                            setTransport({...transport, type_body: val})
+                                            fetchCarTech(val)
+                                        }}
+                                        >
+                                        {carConfigurationSelectOptions}
+                                    </Select>
                                 </Col>
                                 <Col span={2}>
                                     <p>Тип КПП</p>
@@ -108,41 +198,45 @@ const TransportIdPages = () => {
                                         showSearch
                                         placeholder="Выберите тип КПП"
                                         style={{ width: '100%' }}
-                                        defaultValue={
-                                            transport.type_transmission == "Автоматическая"
-                                            ? "Автоматическая"
-                                            : transport.type_transmission == "Механическая"
-                                            ? "Механическая"
-                                            : false
-                                        }
+                                        defaultValue={transport.type_transmission}
                                         onChange={(val) => {
                                             setTransport({...transport, type_transmission: val})
                                         }}
                                         >
-                                        <Option value="Автоматическая">Автоматическая</Option>
-                                        <Option value="Механическая">Механическая</Option>
+                                        {carTransmissionSelectOption}
                                     </Select>
                                 </Col>
-                                <Col span={6}>
-                                    <Input 
-                                        addonBefore="Тип кузова"
-                                        onChange={e => setTransport({...transport, type_body: e.target.value})}
-                                        defaultValue={transport.type_body}
-                                    />
+                                <Col span={2}>
+                                    <p>Привод</p>
                                 </Col>
-                                <Col span={6}>
-                                    <Input 
-                                        addonBefore="Количество дверей"
-                                        onChange={e => setTransport({...transport, number_of_doors: e.target.value})}
-                                        defaultValue={transport.number_of_doors}
-                                    />
-                                </Col>
-                                <Col span={6}>
-                                    <Input 
-                                        addonBefore="Привод"
-                                        onChange={e => setTransport({...transport, type_of_drive: e.target.value})}
+                                <Col span={4}>
+                                    <Select
+                                        showSearch
+                                        placeholder="Выберите привод"
+                                        style={{ width: '100%' }}
                                         defaultValue={transport.type_of_drive}
-                                    />
+                                        onChange={(val) => {
+                                            setTransport({...transport, type_of_drive: val})
+                                        }}
+                                        >
+                                        {carDriveSelectOption}
+                                    </Select>
+                                </Col>
+                                <Col span={2}>
+                                    <p>Тип двигателя</p>
+                                </Col>
+                                <Col span={4}>
+                                    <Select
+                                        showSearch
+                                        placeholder="Выберите привод"
+                                        style={{ width: '100%' }}
+                                        defaultValue={transport.engine_type}
+                                        onChange={(val) => {
+                                            setTransport({...transport, engine_type: val})
+                                        }}
+                                        >
+                                        {carEngineTypeSelectOption}
+                                    </Select>
                                 </Col>
                                 <Col span={24}>
                                     <p>* машинам старше 2002 года необязательно заполнять тип КПП, тип кузова и привод</p>

@@ -5,17 +5,6 @@ import ClientIdPages from "../pages/ClientIdPages";
 import TransportIdPages from "../pages/TransportIdPages";
 import OrdersByTransportIdPages from "../pages/OrdersByTransportIdPages";
 
-// export const publicRoutes = [
-//     {path: '/about', component: About, exact: true},
-//     {path: '/clients', component: Clients, exact: true},
-//     {path: '/clients/:id', component: ClientIdPages, exact: true},
-//     {path: '/transports/:id_transport', component: TransportIdPages, exact: true},
-//     {path: '/orders/:id_transport', component: OrdersByTransportIdPages, exact: true},
-// ]
-
-// export const privateRoutes = [
-//     {path: '/login', component: Login, exact:true}
-// ]
 
 export const privateRoutes = [
     {path: '/about', component: About, exact: true},

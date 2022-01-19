@@ -1,11 +1,44 @@
 import axios from "axios";
 
+
 const url_server = 'http://127.0.0.1:8000'
-// const url_server = 'http://127.0.0.1:5000'
-// const url_server = 'http://172.2.0.2:5000'
+
+
+const url_car_server = 'http://127.0.0.1:8001'
+
+
+export const sendAuth = async(form) => {
+    const options = {
+        "Content-Type": "application/json",
+        headers: {
+            "content-type": "application/x-www-form-urlencoded"
+        }
+    }
+    const temp =JSON.stringify(
+        `grant_type=&username=${form.username}&password=${form.password}&scope=&client_id=&client_secret=`
+    )
+
+    const response = await axios.post(
+        url_server  + "/token",
+        temp,
+        options
+    )
+
+    return response
+}
+
 
 export const getAllClients = async () => {
-    const response = await axios.get(url_server + '/clients')
+    const options = {
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("access_token")
+        }
+        
+    }
+    const response = await axios.get(
+        url_server + '/clients',
+        options
+    )
     return response
 }
 
@@ -19,7 +52,10 @@ export const sendDocumentNewClient = async (client) => {
     }
     const json = JSON.stringify(data)
     const options = {
-        headers: {"content-type": "application/json"}
+        headers: {
+            "content-type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("access_token")
+        }
     }
     const response = await axios.post(
         url_server + '/load_client_docs', 
@@ -36,7 +72,10 @@ export const addNewDriver = async (driver) => {
     }
     const json = JSON.stringify(data)
     const options = {
-        headers: {"content-type": "application/json"}
+        headers: {
+            "content-type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("access_token")
+        }
     }
     const response = await axios.post(
         url_server + '/load_driver_docs', 
@@ -48,8 +87,14 @@ export const addNewDriver = async (driver) => {
 
 
 export const getClientById = async (id) => {
+    const options = {
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("access_token")
+        }
+    }
     const response = await axios.get(
-        url_server + `/clients/${id}`
+        url_server + `/clients/${id}`,
+        options
     )
     return response
 }
@@ -63,7 +108,10 @@ export const setClientById = async (id_client, client, passport, driver_license,
         transports: transports
     })
     const options = {
-        headers: {"content-type": "application/json"}
+        headers: {
+            "content-type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("access_token")
+        }
     }
     const response = await axios.post(
         url_server + `/clients/${id_client}/edit`,
@@ -75,8 +123,15 @@ export const setClientById = async (id_client, client, passport, driver_license,
 
 
 export const getTransportById = async (id_transport) => {
+    const options = {
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("access_token")
+        }
+    }
     const response = await axios.get(
-        url_server + `/transports/${id_transport}`)
+        url_server + `/transports/${id_transport}`,
+        options
+    )
     return response
 }
 
@@ -87,7 +142,10 @@ export const setTransportById = async (id_transport, transport, transport_passpo
         transport_registration: transport_registration
     })
     const options = {
-        headers: {"content-type": "application/json"}
+        headers: {
+            "content-type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("access_token")
+        }
     }
     const response = await axios.post(
         url_server + `/transports/${id_transport}/edit`,
@@ -99,8 +157,15 @@ export const setTransportById = async (id_transport, transport, transport_passpo
 
 
 export const getOrdersByTransportId = async (id_transport) => {
+    const options = {
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("access_token")
+        }
+    }
     const response = await axios.get(
-        url_server + `/orders/${id_transport}`)
+        url_server + `/orders/${id_transport}`,
+        options
+    )
     return response
 }
 
@@ -111,7 +176,10 @@ export const setDriverById = async (client, driver) => {
         driver: driver
     })
     const options = {
-        headers: {"content-type": "application/json"}
+        headers: {
+            "content-type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("access_token")
+        }
     }
     const response = await axios.post(
         url_server + `/drivers/${driver.id}/edit`,
@@ -123,8 +191,14 @@ export const setDriverById = async (client, driver) => {
 
 
 export const getCalcTransportById = async (id_client, id_transport) => {
+    const options = {
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("access_token")
+        }
+    }
     const response = await axios.get(
-        url_server + `/clients/${id_client}/transports/${id_transport}/calc`
+        url_server + `/clients/${id_client}/transports/${id_transport}/calc`,
+        options
     )
     return response
 }
@@ -134,7 +208,10 @@ export const checkPassportDetails = async (series, number) => {
         data: series + number
     })
     const options = {
-        headers: {"content-type": "application/json"}
+        headers: {
+            "content-type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("access_token")
+        }
     }
     const response = await axios.get(
         url_server + `/check_passport_details`,
@@ -149,12 +226,45 @@ export const getTransportPrice = async (transport) => {
         transport: transport
     })
     const options = {
-        headers: {"content-type": "application/json"}
+        headers: {
+            "content-type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("access_token")
+        }
     }
     const response = await axios.get(
         url_server + `/get_transport_price`,
         data,
         options
+    )
+    return response
+}
+
+export const getCarMarks = async () => {
+    const response = await axios.get(
+        url_car_server + `/car_marks`
+    )
+    return response
+}
+
+export const getCarModels = async (mark) => {
+    const response = await axios.get(
+        url_car_server + `/car_models/mark=${mark}`
+    )
+    return response
+}
+
+
+export const getCarConfigurationsByModel = async (mark, model) => {
+    const response = await axios.get(
+        url_car_server + `/car_configurations/mark=${mark}&&model=${model}`
+    )
+    return response
+}
+
+
+export const getCarTechList = async (mark, model, body_type) => {
+    const response = await axios.get(
+        url_car_server + `/car_tech_lists/mark=${mark}&&model=${model}&&body_type=${body_type}`
     )
     return response
 }
