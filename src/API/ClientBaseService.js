@@ -25,7 +25,7 @@ export const sendAuth = async(form) => {
         temp,
         options
     ).catch(() => {
-        message.error('Неверные дааные')
+        message.error('Неверные данные')
     })
 
     return response
