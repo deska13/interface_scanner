@@ -1,9 +1,11 @@
 import { Button, Input, Row, Col, Form, Card } from 'antd';
 import React, {useContext} from 'react'
-import { sendAuth } from '../API/ClientBaseService';
+import { useEffect } from 'react';
+import { checkAuth, sendAuth } from '../API/ClientBaseService';
 import { AuthContext, TokenContext } from '../context';
 import { useFetching } from '../hooks/useFetching';
 import '../styles/App.css'
+
 
 
 const Login = () => {
@@ -12,17 +14,27 @@ const Login = () => {
     const [fetchAuth, isLoading, loadError] = useFetching(async (form) => {
         const response = await sendAuth(form)
         if (response.data){
+            await localStorage.setItem("access_token", response.data.access_token)
+            await localStorage.setItem("username", form.username)
             setIsAuth(true)
-            localStorage.setItem("access_token", response.data.access_token)
         }
-        else{
-            alert.call("Неверные данные")
+    })
+
+    const [fetchCheckAuth, isLoadingCheckAuth, loadErrorCheckAuth] = useFetching(async () => {
+        const token = localStorage.getItem("access_token")
+        const response = await checkAuth(token)
+        if (response.data.username == localStorage.getItem("username")){
+            setIsAuth(true)
         }
     })
 
     const login = event => {
         fetchAuth(event)
     }
+
+    useEffect(() => {
+        fetchCheckAuth()
+    }, [])
 
     return (
         <div className='ant-layout-content'>

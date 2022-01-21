@@ -27,6 +27,7 @@ const TransportIdPages = () => {
     const [carTransmissions, setCarTransmission] = useState([])
     const [carDrives, setCarDrive] = useState([])
     const [carEngineTypes, setCarEngineType] = useState([])
+    const [carEnginePowers, setCarEnginePowers] = useState([])
     const [modal, setModal] = useState(false)
 
     const [fetchTransportById, isLoading, loadError] = useFetching(async () => {
@@ -60,6 +61,7 @@ const TransportIdPages = () => {
         setCarTransmission(response.data.transmission)
         setCarDrive(response.data.drive)
         setCarEngineType(response.data.engine_type)
+        setCarEnginePowers(response.data.horse_power)
     })
 
     const [setTrasnportInfo, isSet, setError] = useFetching(async () => {
@@ -114,6 +116,10 @@ const TransportIdPages = () => {
 
     const carEngineTypeSelectOption = carEngineTypes.map((engineType) => {
         return <Option value={engineType}>{engineType}</Option>
+    })
+
+    const carEnginePowerSelectOption = carEnginePowers.map((enginePower) => {
+        return <Option value={enginePower}>{enginePower}</Option>
     })
 
     useEffect(() => {
@@ -236,6 +242,22 @@ const TransportIdPages = () => {
                                         }}
                                         >
                                         {carEngineTypeSelectOption}
+                                    </Select>
+                                </Col>
+                                <Col span={2}>
+                                    <p>Мощность двигателя</p>
+                                </Col>
+                                <Col span={4}>
+                                    <Select
+                                        showSearch
+                                        placeholder="Мощность двигателя"
+                                        style={{ width: '100%' }}
+                                        defaultValue={transport.engine_power}
+                                        onChange={(val) => {
+                                            setTransport({...transport, engine_power: val})
+                                        }}
+                                        >
+                                        {carEnginePowerSelectOption}
                                     </Select>
                                 </Col>
                                 <Col span={24}>

@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import { message } from 'antd';
 
 const url_server = 'http://127.0.0.1:8000'
 
@@ -18,12 +18,30 @@ export const sendAuth = async(form) => {
         `grant_type=&username=${form.username}&password=${form.password}&scope=&client_id=&client_secret=`
     )
 
+    console.log(temp)
+
     const response = await axios.post(
         url_server  + "/token",
         temp,
         options
-    )
+    ).catch(() => {
+        message.error('Неверные дааные')
+    })
 
+    return response
+}
+
+
+export const checkAuth = async(token) => {
+    const options = {
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("access_token")
+        }
+    }
+    const response = await axios.get(
+        url_server  + "/users/me/",
+        options
+    )
     return response
 }
 
@@ -33,7 +51,6 @@ export const getAllClients = async () => {
         headers: {
             Authorization: "Bearer " + localStorage.getItem("access_token")
         }
-        
     }
     const response = await axios.get(
         url_server + '/clients',

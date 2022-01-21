@@ -29,6 +29,11 @@ const AppRoute = () => {
         setCollapsed(!collapsed)
     }
 
+    const logout = () => {
+        localStorage.clear()
+        setIsAuth(false)
+    }
+
     useEffect(() => {
         if (localStorage.getItem('auth')) {
             setIsAuth(false)
@@ -62,7 +67,7 @@ const AppRoute = () => {
                         <Link to="about">Связь</Link>
                     </Menu.Item>
                     <Menu.Item icon={<ImportOutlined />}>
-                        <Button onClick={() => setIsAuth(false)}>Выйти</Button>
+                        <Button onClick={() => logout()}>Выйти</Button>
                     </Menu.Item>
                 </Menu> 
             </Sider>
