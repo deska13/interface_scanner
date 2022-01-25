@@ -3,6 +3,9 @@ import {useNavigate} from 'react-router-dom'
 import moment from 'moment';
 import { Row, Col, Button, Card } from 'antd'
 import { deleteClient } from '../API/ClientBaseService';
+import { useState } from 'react';
+import { useFetching } from '../hooks/useFetching'
+
 
 const ClientItem = (props) => {
     const navigate = useNavigate()
@@ -26,7 +29,7 @@ const ClientItem = (props) => {
                         <Button onClick={()=> navigate(`/clients/${props.client.id}`)}>Открыть</Button>
                     </Col>
                     <Col span={4}>
-                        <Button onClick={}>Удалить</Button>
+                        <Button disabled onClick={() => false}>Удалить</Button>
                     </Col>
                     <Col span={8}>День рождения: {moment(props.client.birthday).format("D.M.YYYY")}</Col>
                     <Col span={8}>Клиент создан: {moment(props.client.time_create).format("D.M.YYYY H:mm")}</Col>

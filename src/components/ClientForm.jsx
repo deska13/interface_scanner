@@ -56,7 +56,7 @@ const ClientForm = ({modal, setModal}) => {
                     beforeUpload={() => false}
                 >
                     <Button icon={<UploadOutlined />}>
-                        Загрузить паспорт
+                        Загрузить паспорт (персональные данные, прописка)
                     </Button>
                 </Upload>
                 <p>Водительские права</p>
@@ -125,7 +125,7 @@ const ClientForm = ({modal, setModal}) => {
                     beforeUpload={() => false}
                 >
                     <Button icon={<UploadOutlined />}>
-                        Загрузить паспорт ТС
+                        Загрузить паспорт ТС (основные данные, особые отметки)
                     </Button>
                 </Upload>
                 {/* <p>Водители</p>
