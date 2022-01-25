@@ -59,6 +59,21 @@ export const getAllClients = async () => {
     return response
 }
 
+
+export const deleteClient = async (id_client) => {
+    const options = {
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("access_token")
+        }
+    }
+    const response = await axios.delete(
+        url_server + `/delete_clients/${id_client}`,
+        options
+    )
+    return response
+}
+
+
 export const sendDocumentNewClient = async (client) => {
     const data = {
         passport_image: client.passport_image,
@@ -78,7 +93,9 @@ export const sendDocumentNewClient = async (client) => {
         url_server + '/load_client_docs', 
         json, 
         options
-    )
+    ).catch(() => {
+        message.error('Неудалось загрузить данные')
+    })
     return response
 }
 

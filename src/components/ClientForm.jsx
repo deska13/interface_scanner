@@ -39,17 +39,21 @@ const ClientForm = ({modal, setModal}) => {
                 <p>Паспорт</p>
                 <Upload
                     listType="picture"
-                    maxCount={1}
-                    beforeUpload={(file) => {
-                            new Promise(() => {
+                    maxCount={2}
+                    onChange={(file) => {
+                        new Promise(() => {
+                            var arr = []
+                            for (let i = 0; i < file.fileList.length; i++) {
                                 const reader = new FileReader()
-                                reader.readAsDataURL(file)
+                                reader.readAsDataURL(file.fileList[i]['originFileObj'])
                                 reader.onload = () => {
-                                    setClient({...client, passport_image: reader.result})
+                                    arr.push(reader.result)
                                 }
-                            })
-                        }
-                    }
+                            }
+                            setClient({...client, passport_image: arr})
+                        })
+                    }}
+                    beforeUpload={() => false}
                 >
                     <Button icon={<UploadOutlined />}>
                         Загрузить паспорт
@@ -61,11 +65,8 @@ const ClientForm = ({modal, setModal}) => {
                     maxCount={2}
                     onChange={(file) => {
                         new Promise(() => {
-                            console.log(file)
                             var arr = []
                             for (let i = 0; i < file.fileList.length; i++) {
-                                console.log(i)
-                                console.log(file.fileList[i]['originFileObj'])
                                 const reader = new FileReader()
                                 reader.readAsDataURL(file.fileList[i]['originFileObj'])
                                 reader.onload = () => {
@@ -107,18 +108,21 @@ const ClientForm = ({modal, setModal}) => {
                 <p>Паспорт ТС</p>
                 <Upload
                     listType="picture"
-                    maxCount={1}
-                    beforeUpload={(file) => {
+                    maxCount={2}
+                    onChange={(file) => {
                         new Promise(() => {
-                            const reader = new FileReader()
-                            reader.readAsDataURL(file)
-                            console.log(file)
-                            reader.onload = () => {
-                                setClient({...client, passport_transport_image: reader.result})
+                            var arr = []
+                            for (let i = 0; i < file.fileList.length; i++) {
+                                const reader = new FileReader()
+                                reader.readAsDataURL(file.fileList[i]['originFileObj'])
+                                reader.onload = () => {
+                                    arr.push(reader.result)
+                                }
                             }
+                            setClient({...client, passport_transport_image: arr})
                         })
-                    }
-                }
+                    }}
+                    beforeUpload={() => false}
                 >
                     <Button icon={<UploadOutlined />}>
                         Загрузить паспорт ТС
