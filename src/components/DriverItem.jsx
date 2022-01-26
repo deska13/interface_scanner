@@ -56,6 +56,9 @@ const DriverItem = (props) => {
                             defaultValue={client.patronymic}
                         />
                     </Col>
+                    <Col span={24}>
+                        Водительские права
+                    </Col>
                     <Col span={4}>
                         <Input
                             addonBefore="Серия"
@@ -76,12 +79,12 @@ const DriverItem = (props) => {
                             format={dateFormat}
                             onChange={val => {
                                 if (val != null) {
-                                    setDriver({...driver, birthday: moment(val._d).format("YYYY-MM-DD")})
+                                    setClient({...client, birthday: moment(val._d).format("YYYY-MM-DD")})
                                 }
                             }}
-                            defaultValue={!driver.birthday
+                            defaultValue={!client.birthday
                                 ? moment("1900-01-01")
-                                : moment(driver.birthday)
+                                : moment(client.birthday)
                             }
                         />
                     </Col>
