@@ -14,7 +14,10 @@ const ClientItem = (props) => {
 
     const [fetchDeleteClient, isDeleteClientLoading, deleteClientError] = useFetching(async () => {
         const response = await deleteClient(props.client.id)
-        setView(false)
+        console.log(response.data)
+        if (response.data == true){
+            setView(false)
+        }
     })
 
     return (
@@ -29,7 +32,7 @@ const ClientItem = (props) => {
                         <Button onClick={()=> navigate(`/clients/${props.client.id}`)}>Открыть</Button>
                     </Col>
                     <Col span={4}>
-                        <Button disabled onClick={() => false}>Удалить</Button>
+                        <Button onClick={() => fetchDeleteClient()}>Удалить</Button>
                     </Col>
                     <Col span={8}>День рождения: {moment(props.client.birthday).format("D.M.YYYY")}</Col>
                     <Col span={8}>Клиент создан: {moment(props.client.time_create).format("D.M.YYYY H:mm")}</Col>
