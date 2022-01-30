@@ -89,6 +89,7 @@ export const sendDocumentNewClient = async (client) => {
             Authorization: "Bearer " + localStorage.getItem("access_token")
         }
     }
+    message.info("Данные отправлены на обработку")
     const response = await axios.post(
         url_server + '/load_client_docs', 
         json, 
@@ -111,11 +112,14 @@ export const addNewDriver = async (driver) => {
             Authorization: "Bearer " + localStorage.getItem("access_token")
         }
     }
+    message.info("Данные отправлены на обработку")
     const response = await axios.post(
         url_server + '/load_driver_docs', 
         json, 
         options
-    )
+    ).catch(() => {
+        message.error('Неудалось загрузить данные')
+    })
     return response
 }
 

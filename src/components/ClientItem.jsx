@@ -43,7 +43,7 @@ const ClientItem = (props) => {
             <Card>
                 <Row>
                     <Col span={24}>
-                        Пользователь удалён
+                        Клиент удалён
                     </Col>
                 </Row>
             </Card>}

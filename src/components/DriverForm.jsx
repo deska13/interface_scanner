@@ -12,9 +12,9 @@ const DriverForm = ({transport_id ,modal, setModal}) => {
         driver_license_image: createRef()
     })
 
-    const [addNewDriver, isAddNewDriverLoad, addNewDriverError] = useFetching(async () => {
+    const [fetchAddNewDriver, isAddNewDriverLoad, addNewDriverError] = useFetching(async () => {
         const response = await addNewDriver(driver)
-        console.log(response.data)
+        window.location.reload()
     }) 
 
     return (
@@ -23,7 +23,7 @@ const DriverForm = ({transport_id ,modal, setModal}) => {
             onCancel={() => setModal(false)}
             width={1000}
             footer={[
-                <Button type="primary" onClick={() => addNewDriver()}>
+                <Button type="primary" onClick={() => fetchAddNewDriver()}>
                     Отправить на обработку
                 </Button>]}
             >

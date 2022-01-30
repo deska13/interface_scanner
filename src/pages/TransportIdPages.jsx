@@ -53,7 +53,6 @@ const TransportIdPages = () => {
     const [fetchCarConfigurationByModel, isLoadingCarConfigurationByModel, loadErrorCarConfigurationByModel] = useFetching(async (val) => {
         const response = await getCarConfigurationsByModel(transport.vehicle_mark, val)
         setCarConfigurations(response.data)
-        console.log(response)
     })
 
     const [fetchCarTech, isLoadingCarTech, loadErrorCarTech] = useFetching(async (val) => {
