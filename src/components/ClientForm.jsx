@@ -22,7 +22,10 @@ const ClientForm = ({modal, setModal}) => {
 
     const [addNewClient, isAddNewClientLoad, addNewClientError] = useFetching(async () => {
         const response = await sendDocumentNewClient(client)
-        navigate(`/clients/${response.data}`)
+        console.log(response.status)
+        if (response.status == 200){
+            navigate(`/clients/${response.data}`)
+        }
     }) 
 
     return (
