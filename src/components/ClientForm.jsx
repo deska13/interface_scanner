@@ -26,6 +26,10 @@ const ClientForm = ({modal, setModal}) => {
         if (response.status == 200){
             navigate(`/clients/${response.data}`)
         }
+        else{
+            window.location.reload()
+            message.error("Неудалось загрузить данные")
+        }
     }) 
 
     return (
