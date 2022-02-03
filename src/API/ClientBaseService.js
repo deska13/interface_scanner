@@ -24,9 +24,7 @@ export const sendAuth = async(form) => {
         url_server  + "/token",
         temp,
         options
-    ).catch(() => {
-        message.error('Неверные данные')
-    })
+    )
 
     return response
 }
