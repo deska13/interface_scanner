@@ -7,6 +7,9 @@ const url_server = 'http://127.0.0.1:8000'
 const url_car_server = 'http://127.0.0.1:8001'
 // const url_car_server = 'http://194.67.87.175:8001'
 
+// тут самый тупой косяк, который может быть, подключения к разными серверам из одного файла
+
+
 export const sendAuth = async(form) => {
     const options = {
         "Content-Type": "application/json",
